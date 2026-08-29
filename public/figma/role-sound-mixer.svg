@@ -1,0 +1,9 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path id="headband" d="M16 30C16 18 23 9 32 9C41 9 48 18 48 30" stroke="#F7F5EF" stroke-width="4" stroke-linecap="round" fill="none"/>
+<rect id="earLeft" x="10" y="27" width="10" height="17" rx="4" fill="#F7F5EF"/>
+<rect id="earRight" x="44" y="27" width="10" height="17" rx="4" fill="#F7F5EF"/>
+<rect id="mixer" x="17" y="46" width="30" height="14" rx="2" fill="#F7F5EF"/>
+<rect id="slider1" x="22" y="50" width="3" height="6" fill="#111936"/>
+<rect id="slider2" x="30.5" y="48" width="3" height="8" fill="#111936"/>
+<rect id="slider3" x="39" y="51" width="3" height="5" fill="#111936"/>
+</svg>

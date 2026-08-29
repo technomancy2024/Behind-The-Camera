@@ -1,0 +1,5 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path id="tripod" d="M32 60L20 48M32 60L44 48M32 60V16" stroke="#F7F5EF" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+<rect id="arm" x="32" y="14.5" width="20" height="3.5" fill="#F7F5EF"/>
+<rect id="flag" x="48" y="4" width="14" height="18" rx="1.5" fill="#F7F5EF"/>
+</svg>

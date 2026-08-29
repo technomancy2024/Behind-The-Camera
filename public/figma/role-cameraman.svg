@@ -1,0 +1,8 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect id="body" x="6" y="22" width="34" height="26" rx="4" fill="#F7F5EF"/>
+<circle id="reel1" cx="14" cy="18" r="7" fill="#F7F5EF"/>
+<circle id="reel2" cx="30" cy="18" r="7" fill="#F7F5EF"/>
+<path id="viewfinder" d="M40 28L58 20V50L40 42V28Z" fill="#F7F5EF"/>
+<circle id="lensOuter" cx="23" cy="35" r="8" fill="#111936"/>
+<circle id="lensInner" cx="23" cy="35" r="5" fill="#F7F5EF"/>
+</svg>

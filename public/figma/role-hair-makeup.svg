@@ -1,0 +1,11 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect id="combSpine" x="8" y="14" width="28" height="7" rx="2" fill="#F7F5EF"/>
+<rect id="tooth1" x="10" y="21" width="2.4" height="11" fill="#F7F5EF"/>
+<rect id="tooth2" x="15.4" y="21" width="2.4" height="11" fill="#F7F5EF"/>
+<rect id="tooth3" x="20.8" y="21" width="2.4" height="11" fill="#F7F5EF"/>
+<rect id="tooth4" x="26.2" y="21" width="2.4" height="11" fill="#F7F5EF"/>
+<rect id="tooth5" x="31.6" y="21" width="2.4" height="11" fill="#F7F5EF"/>
+<circle id="mirrorHead" cx="46" cy="38" r="11" fill="none" stroke="#F7F5EF" stroke-width="3.5"/>
+<rect id="mirrorNeck" x="44" y="48" width="4" height="6" fill="#F7F5EF"/>
+<rect id="mirrorHandle" x="42" y="53" width="8" height="9" rx="2" fill="#F7F5EF"/>
+</svg>
