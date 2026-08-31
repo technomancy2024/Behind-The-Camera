@@ -65,8 +65,6 @@ export default function GeneratingPage() {
     if (startedRef.current) return;
     startedRef.current = true;
     startGeneration();
-
-    return () => clearInterval(timerRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -82,7 +80,7 @@ export default function GeneratingPage() {
         <h1 className={styles.darkHeading}>
           Creating Your
           <br />
-          <span className={styles.darkHeadingGradient}>Crew Role</span>
+          <span className={styles.darkHeadingGradientVertical}>Crew Role</span>
           <br />
           Transformation
         </h1>

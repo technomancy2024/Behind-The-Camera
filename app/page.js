@@ -18,7 +18,7 @@ export default function Home() {
       <img className={styles.bgPhoto} style={{ opacity: 1 }} src="/figma/home-bg.png" alt="" />
       <div className={`${styles.darkContent} ${styles.darkContentBottom}`}>
         <span className={styles.homeKickerDark}>Behind The Camera</span>
-        <h1 className={styles.darkHeading}>
+        <h1 className={`${styles.darkHeading} ${styles.darkHeadingLg}`}>
           See Yourself
           <br />
           Behind The

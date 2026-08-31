@@ -1,5 +1,5 @@
 .page {
-  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -8,10 +8,11 @@
 
 .booth {
   position: relative;
+  z-index: 0;
   width: min(100%, 480px);
-  min-height: 100vh;
+  min-height: 100dvh;
   margin: 0 auto;
-  padding: 24px 22px 30px;
+  padding: 14px 20px 14px;
   overflow: hidden;
   background-color: var(--background);
   background-size: cover;
@@ -21,9 +22,10 @@
 
 .topBar {
   position: relative;
+  z-index: 2;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .topBarLeft {
@@ -33,50 +35,54 @@
   justify-content: flex-start;
 }
 
+.logoRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
 .logo {
-  height: 46px;
+  height: 56px;
   width: auto;
 }
 
-.homeButton {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border: none;
+.sealLogo {
+  height: 54px;
+  width: 54px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.85);
-  box-shadow: 0 3px 8px rgba(15, 33, 97, 0.2);
-  cursor: pointer;
-  z-index: 1;
+  object-fit: contain;
 }
 
-.homeButton img {
-  width: 18px;
-  height: 18px;
+.logoButton {
+  display: flex;
+  align-items: center;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
 }
 
 .screen {
+  position: relative;
+  z-index: 1;
   display: flex;
-  min-height: calc(100vh - 90px);
+  min-height: calc(100dvh - 84px);
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding-top: 20px;
+  padding-top: 10px;
 }
 
 .screenLeft {
+  position: relative;
+  z-index: 1;
   display: flex;
-  min-height: calc(100vh - 90px);
+  min-height: calc(100dvh - 84px);
   flex-direction: column;
   align-items: flex-start;
   text-align: left;
-  padding-top: 40px;
+  padding-top: 20px;
 }
 
 .dashLabel {
@@ -533,6 +539,7 @@
 /* Gender & age selection (dark cinematic redesign) */
 .bgPhoto {
   position: absolute;
+  z-index: 0;
   inset: 0;
   width: 100%;
   height: 100%;
@@ -542,37 +549,58 @@
 
 .darkContent {
   position: relative;
+  z-index: 1;
   width: 100%;
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   text-align: center;
 }
 
 .darkHeading {
-  margin: 6px 0 0;
+  margin: 4px 0 0;
   color: #f7f5ef;
   font-family: var(--font-display), Arial, sans-serif;
   font-weight: 700;
-  font-size: clamp(26px, 7.6vw, 34px);
-  line-height: 1.15;
+  font-size: clamp(26px, 8vw, 37px);
+  line-height: 1.08;
   letter-spacing: -0.3px;
   text-transform: uppercase;
 }
 
+.darkHeadingLg {
+  font-size: clamp(32px, 10vw, 45px);
+  line-height: 1.03;
+}
+
 .darkHeadingGradient {
-  background-image: linear-gradient(90deg, #008fff 15%, #ff8500 80%);
+  background-image: linear-gradient(90deg, #0072cc 0%, #808580 50%, #ff8500 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.darkHeadingGradientReverse {
+  background-image: linear-gradient(90deg, #ff8500 0%, #0072cc 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.darkHeadingGradientVertical {
+  background-image: linear-gradient(180deg, #ff7c00 0%, #808580 50%, #008fff 100%);
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
 }
 
 .darkCopy {
-  margin: 14px 0 6px;
+  margin: 10px 0 4px;
   color: rgba(247, 245, 239, 0.8);
-  font: 14px/1.6 var(--font-body), Arial, sans-serif;
-  max-width: 30ch;
+  font: 13px/1.35 var(--font-body), Arial, sans-serif;
+  max-width: 32ch;
 }
 
 .dividerRow {
@@ -580,7 +608,7 @@
   align-items: center;
   gap: 12px;
   width: 100%;
-  margin: 22px 0 14px;
+  margin: 12px 0 8px;
 }
 
 .dividerRow::before,
@@ -597,8 +625,8 @@
 
 .dividerLabel {
   color: #f7f8fa;
-  font: 600 13px var(--font-display), Arial, sans-serif;
-  letter-spacing: 2px;
+  font: 500 17px var(--font-display), Arial, sans-serif;
+  letter-spacing: 1px;
   text-transform: uppercase;
   white-space: nowrap;
 }
@@ -624,11 +652,11 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  min-height: 108px;
+  gap: 8px;
+  min-height: 92px;
   border: 1.5px solid #ff7c00;
   border-radius: 16px;
-  padding: 18px 8px;
+  padding: 13px 8px;
   background: #111936;
   cursor: pointer;
   transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
@@ -642,8 +670,8 @@
 
 .darkCard span {
   color: #f7f8fa;
-  font: 600 12px/1.3 var(--font-body), Arial, sans-serif;
-  letter-spacing: 0.4px;
+  font: 500 13px/1.3 var(--font-body), Arial, sans-serif;
+  letter-spacing: 0.3px;
   text-align: center;
   text-transform: uppercase;
 }
@@ -651,6 +679,7 @@
 .darkCard small {
   display: block;
   margin-top: 2px;
+  font-size: 12px;
   font-weight: 500;
   opacity: 0.65;
   text-transform: none;
@@ -668,7 +697,7 @@
 }
 
 .crewCard {
-  min-height: 130px;
+  min-height: 112px;
 }
 
 .crewCard img {
@@ -684,11 +713,11 @@
   gap: 10px;
   border: 2px solid #f7f8fa;
   border-radius: 30px;
-  padding: 15px 20px;
-  background: linear-gradient(90deg, #1a7bc7, #ff8500);
+  padding: 13px 20px;
+  background: linear-gradient(90deg, #0072cc 0%, #808580 50%, #ff8500 100%);
   color: #f7f5ef;
-  font: 700 13px/1 var(--font-display), Arial, sans-serif;
-  letter-spacing: 1.5px;
+  font: 700 15px/1 var(--font-body), Arial, sans-serif;
+  letter-spacing: 1px;
   text-transform: uppercase;
   cursor: pointer;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
@@ -715,8 +744,8 @@
   padding: 13px 16px;
   background: transparent;
   color: #f7f5ef;
-  font: 700 12px/1 var(--font-display), Arial, sans-serif;
-  letter-spacing: 1.2px;
+  font: 700 15px/1 var(--font-body), Arial, sans-serif;
+  letter-spacing: 1px;
   text-transform: uppercase;
   cursor: pointer;
 }
@@ -738,16 +767,16 @@
 
 .homeKickerDark {
   color: #ff7c00;
-  font: 600 13px var(--font-display), Arial, sans-serif;
+  font: 500 15px var(--font-display), Arial, sans-serif;
   letter-spacing: 4px;
   text-transform: uppercase;
   margin-bottom: 4px;
 }
 
 .homeTagline {
-  margin-top: 20px;
+  margin-top: 14px;
   color: rgba(247, 245, 239, 0.9);
-  font: 500 12px var(--font-display), Arial, sans-serif;
+  font: 500 13px var(--font-display), Arial, sans-serif;
   letter-spacing: 2px;
   text-transform: uppercase;
 }
@@ -776,11 +805,11 @@
 .ringPercent {
   position: relative;
   color: #f7f5ef;
-  font: 700 44px/1 var(--font-display), Arial, sans-serif;
+  font: 500 44px/1 var(--font-body), Arial, sans-serif;
 }
 
 .ringPercent span {
-  font-size: 22px;
+  font-size: 39px;
 }
 
 .darkLabelRow {
@@ -789,7 +818,9 @@
   gap: 8px;
   margin: 4px 0 18px;
   color: #f7f8fa;
-  font: 600 14px var(--font-body), Arial, sans-serif;
+  font: 500 13px var(--font-display), Arial, sans-serif;
+  letter-spacing: 2.6px;
+  text-transform: uppercase;
 }
 
 .darkLabelRow img {
@@ -818,8 +849,8 @@
 .captureCard {
   position: relative;
   width: 100%;
-  aspect-ratio: 3 / 4;
-  margin: 6px 0 20px;
+  aspect-ratio: 749 / 744;
+  margin: 6px 0 14px;
   border: 1.5px solid #ff7c00;
   border-radius: 20px;
   overflow: hidden;
@@ -892,11 +923,16 @@
 }
 
 /* Result screen (dark cinematic redesign) */
+.resultCardWrap {
+  position: relative;
+  width: 100%;
+  margin: 34px 0 18px;
+}
+
 .resultCard {
   position: relative;
   width: 100%;
-  aspect-ratio: 3 / 4;
-  margin: 34px 0 18px;
+  aspect-ratio: 749 / 790;
   border: 1.5px solid #ff7c00;
   border-radius: 20px;
   overflow: hidden;
@@ -926,10 +962,10 @@
   background: #06234a;
   color: #f7f8fa;
   font: 700 13px var(--font-display), Arial, sans-serif;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   text-transform: uppercase;
   white-space: nowrap;
-  z-index: 1;
+  z-index: 2;
 }
 
 .roleBadge img {
@@ -962,14 +998,13 @@
 
 .qrStripText strong {
   display: block;
-  font: 700 13px var(--font-display), Arial, sans-serif;
-  letter-spacing: 1px;
+  font: 700 15px var(--font-display), Arial, sans-serif;
   text-transform: uppercase;
   margin-bottom: 4px;
 }
 
 .qrStripText span {
   display: block;
-  font: 12px/1.4 var(--font-body), Arial, sans-serif;
+  font: 13px/1.35 var(--font-body), Arial, sans-serif;
   color: rgba(247, 248, 250, 0.75);
 }

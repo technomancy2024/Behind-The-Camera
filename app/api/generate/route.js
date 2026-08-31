@@ -40,19 +40,17 @@ export async function POST(request) {
 
   try {
     const replicate = new Replicate({ auth: process.env.REPLICATE_API_TOKEN });
-    const output = await replicate.run("qwen/qwen-image-edit-2511", {
+    const output = await replicate.run("qwen/qwen-image-2-pro", {
       input: {
-        image,
-        prompt: prompt || `Create a ${style.toLowerCase()} festival caricature from these photos.`,
-        go_fast: true,
-        lora_scale: 1,
+        image: image[0],
+        prompt: prompt || `Create a ${style.toLowerCase()} festival caricature from this photo.`,
         aspect_ratio: "3:4",
-        lora_weights: "",
-        output_format: "webp",
-        output_quality: 95,
+        negative_prompt: "",
+        match_input_image: false,
+        enable_prompt_expansion: false,
       },
     });
-    const outputUrl = output?.[0]?.url?.() || output?.[0];
+    const outputUrl = typeof output?.url === "function" ? output.url() : output?.url || output;
     if (!outputUrl) {
       return Response.json({ error: "The model did not return an image." }, { status: 502 });
     }

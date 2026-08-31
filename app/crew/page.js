@@ -66,7 +66,7 @@ export default function CrewPage() {
           type="button"
           disabled={!role}
           onClick={proceed}
-          style={{ marginTop: "auto" }}
+          style={{ marginTop: "22px" }}
         >
           Select The Crew
           <img className={styles.buttonIcon} src="/figma/icon-arrow-right.svg" alt="" />

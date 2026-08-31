@@ -147,7 +147,7 @@ export default function CapturePage() {
       <img className={styles.bgPhoto} style={{ opacity: 0.6 }} src="/figma/capture-bg.png" alt="" />
       <div className={styles.darkContent}>
         <h1 className={styles.darkHeading}>
-          Ready For
+          <span className={styles.darkHeadingGradientReverse}>Ready For</span>
           <br />
           Your Close-Up?
         </h1>

@@ -67,29 +67,31 @@ export default function ResultPage() {
         <h1 className={styles.darkHeading}>
           Download
           <br />
-          <span className={styles.darkHeadingGradient}>Your Moment</span>
+          <span className={styles.darkHeadingGradientReverse}>Your Moment</span>
         </h1>
         <p className={styles.darkCopy}>
           Your AI cinematic transformation is complete. Experience yourself as
           one of the talented professionals who bring every story to life.
         </p>
 
-        <div className={styles.resultCard}>
+        <div className={styles.resultCardWrap}>
           <div className={styles.roleBadge}>
             <img src="/figma/icon-star.svg" alt="" />
             {roleLabel}
             <img src="/figma/icon-star.svg" alt="" />
           </div>
-          <img src={resultUrl} alt="Your generated festival caricature" />
-          {qrUrl && (
-            <div className={styles.qrStrip}>
-              <img src={qrUrl} alt="QR code to download your photo" />
-              <div className={styles.qrStripText}>
-                <strong>Scan For Download</strong>
-                <span>Scan the QR code to download your cinematic moment</span>
+          <div className={styles.resultCard}>
+            <img src={resultUrl} alt="Your generated festival caricature" />
+            {qrUrl && (
+              <div className={styles.qrStrip}>
+                <img src={qrUrl} width={64} height={64} alt="QR code to download your photo" />
+                <div className={styles.qrStripText}>
+                  <strong>Scan For Download</strong>
+                  <span>Scan the QR code to download your cinematic moment</span>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
 
         <button className={styles.gradientCta} type="button" onClick={downloadResult}>

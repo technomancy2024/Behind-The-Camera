@@ -18,18 +18,26 @@ export default function BoothShell({ background, bgColor, align = "center", show
         className={styles.booth}
         style={{ backgroundImage: background ? `url(${background})` : undefined, backgroundColor: bgColor }}
       >
-        <div className={align === "left" ? styles.topBarLeft : styles.topBar}>
-          {showHome && (
-            <button
-              type="button"
-              className={styles.homeButton}
-              onClick={goHome}
-              aria-label="Back to home"
-            >
-              <img src="/figma/icon-home.svg" alt="" />
-            </button>
-          )}
-          <img className={styles.logo} src="/figma/logo.png" alt="IFFJK" />
+        <div className={styles.topBar}>
+          <div className={styles.logoRow}>
+            {showHome ? (
+              <button
+                type="button"
+                className={styles.logoButton}
+                onClick={goHome}
+                aria-label="Back to home"
+              >
+                <img className={styles.logo} src="/figma/logo.png" alt="IFFJK" />
+              </button>
+            ) : (
+              <img className={styles.logo} src="/figma/logo.png" alt="IFFJK" />
+            )}
+            <img
+              className={styles.sealLogo}
+              src="/figma/seal-logo.png"
+              alt="Department of Information and Public Relations, Jammu and Kashmir"
+            />
+          </div>
         </div>
         <section className={align === "left" ? styles.screenLeft : styles.screen}>
           {children}
