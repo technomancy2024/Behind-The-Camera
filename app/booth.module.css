@@ -597,7 +597,7 @@
 }
 
 .darkCopy {
-  margin: 10px 0 4px;
+  margin: 10px 0 20px;
   color: rgba(247, 245, 239, 0.8);
   font: 13px/1.35 var(--font-body), Arial, sans-serif;
   max-width: 32ch;
@@ -640,6 +640,7 @@
 .darkCardGrid.gender {
   grid-template-columns: repeat(2, 1fr);
   margin: 4px 0 6px;
+      padding: 0px 60px;
 }
 
 .darkCardGrid.age {
@@ -653,7 +654,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 92px;
+  min-height: 130px;
   border: 1.5px solid #ff7c00;
   border-radius: 16px;
   padding: 13px 8px;
@@ -697,7 +698,7 @@
 }
 
 .crewCard {
-  min-height: 112px;
+  min-height: 170px;
 }
 
 .crewCard img {
@@ -721,14 +722,18 @@
   text-transform: uppercase;
   cursor: pointer;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-  margin: 10px 0 50px;
+
 }
 
 .gradientCta:disabled {
   opacity: 0.45;
   cursor: not-allowed;
 }
-
+.crewCard {
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
 .gradientCta img {
   width: 18px;
   height: 18px;
@@ -775,7 +780,7 @@
 }
 
 .homeTagline {
-  margin-top: 14px;
+  margin-top: 50px;
   color: rgba(247, 245, 239, 0.9);
   font: 500 13px var(--font-display), Arial, sans-serif;
   letter-spacing: 2px;

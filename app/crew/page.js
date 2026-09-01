@@ -49,15 +49,20 @@ export default function CrewPage() {
 
         <div className={`${styles.darkCardGrid} ${styles.crew}`}>
           {options.map((option) => (
-            <button
-              key={option.id}
-              type="button"
-              className={`${styles.darkCard} ${styles.crewCard} ${role === option.id ? styles.darkCardActive : ""}`}
-              onClick={() => pickRole(option.id)}
-            >
-              <img src={option.icon} alt="" />
-              <span>{option.label}</span>
-            </button>
+           <button
+  key={option.id}
+  type="button"
+  className={`${styles.darkCard} ${styles.crewCard} ${
+    role === option.id ? styles.darkCardActive : ""
+  }`}
+  onClick={() => pickRole(option.id)}
+  style={{
+    backgroundImage: `url("${option.bg}")`,
+  }}
+>
+  {/* <img src={option.icon} alt="" />
+  <span>{option.label}</span> */}
+</button>
           ))}
         </div>
 

@@ -15,7 +15,6 @@ export default function CapturePage() {
 
   const videoRef = useRef(null);
   const streamRef = useRef(null);
-  const fileInputRef = useRef(null);
 
   useEffect(() => {
     const booth = readBooth();
@@ -124,17 +123,6 @@ export default function CapturePage() {
     writeBooth({ capturedImage: null, resultUrl: null });
   }
 
-  function chooseFileInstead(event) {
-    const file = event.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      setCapturedImage(reader.result);
-      writeBooth({ capturedImage: reader.result, resultUrl: null });
-    };
-    reader.readAsDataURL(file);
-  }
-
   function proceed() {
     if (!capturedImage) return;
     router.push("/generating");
@@ -174,7 +162,7 @@ export default function CapturePage() {
                 }}
               />
               <span style={{ position: "relative" }}>
-                Camera unavailable — upload a selfie instead.
+                Camera unavailable. Please enable camera access to continue.
               </span>
             </div>
           ) : (
@@ -186,22 +174,15 @@ export default function CapturePage() {
           )}
         </div>
 
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/png,image/jpeg"
-          onChange={chooseFileInstead}
-          style={{ display: "none" }}
-        />
-
         <div className={styles.captureRow}>
           <button
             type="button"
             className={styles.outlineDark}
-            onClick={capturedImage ? retakePhoto : () => fileInputRef.current?.click()}
+            onClick={retakePhoto}
+            disabled={!capturedImage}
           >
             <img className={styles.buttonIcon} src="/figma/icon-retake.svg" alt="" />
-            {capturedImage ? "Retake" : "Upload"}
+            Retake
           </button>
 
           {!capturedImage && (
