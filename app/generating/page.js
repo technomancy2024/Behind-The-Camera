@@ -45,10 +45,12 @@ export default function GeneratingPage() {
       writeBooth({ resultUrl: data.url });
       setGenerating(false);
       setTimeout(() => router.push("/result"), 350);
-    } catch (err) {
+    } catch {
       clearInterval(timerRef.current);
       setGenerating(false);
-      setError(err.message || "Something went wrong. Please try again.");
+      setError(
+        "We couldn't process your photo. There may have been an issue with how it was captured — please retake it and try again."
+      );
     }
   }
 
