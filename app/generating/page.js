@@ -76,8 +76,7 @@ export default function GeneratingPage() {
   const offset = circumference * (1 - pct / 100);
 
   return (
-    <BoothShell bgColor="#050816" showHome>
-      <img className={styles.bgPhoto} style={{ opacity: 0.8 }} src="/figma/loading-bg.png" alt="" />
+    <BoothShell background="/figma/loading-bg.png" bgOpacity={0.8} bgColor="#050816" showHome>
       <div className={styles.darkContent}>
         <h1 className={styles.darkHeading}>
           Creating Your

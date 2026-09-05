@@ -35,8 +35,7 @@ export default function SelectPage() {
   }
 
   return (
-    <BoothShell bgColor="#050816" showHome>
-      <img className={styles.bgPhoto} style={{ opacity: 0.5 }} src="/figma/genderage-bg.png" alt="" />
+    <BoothShell background="/figma/genderage-bg.png" bgOpacity={0.5} bgColor="#050816" showHome>
       <div className={styles.darkContent}>
         <h1 className={styles.darkHeading}>
           Tell Us About

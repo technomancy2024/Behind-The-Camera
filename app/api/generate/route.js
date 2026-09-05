@@ -18,18 +18,42 @@ async function addWatermark(buffer) {
   const barHeight = Math.max(48, Math.round(height * 0.07));
   const fontSize = Math.max(18, Math.round(barHeight * 0.4));
 
-  const svg = `
+  // The bar background is a plain shape, safe to rasterize via SVG.
+  const barSvg = `
     <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
       <rect x="0" y="${height - barHeight}" width="${width}" height="${barHeight}" fill="rgba(15,33,97,0.65)" />
-      <text x="${width / 2}" y="${height - barHeight / 2}" text-anchor="middle" dominant-baseline="central"
-        font-family="Arial, Helvetica, sans-serif" font-size="${fontSize}" font-weight="700"
-        fill="#ffffff" letter-spacing="1">${escapeXml(WATERMARK_TEXT)}</text>
     </svg>`;
+
+  // Sharp's SVG loader does not reliably rasterize <text> (it can render as
+  // missing/placeholder glyphs depending on the host's fonts). Render the
+  // label through sharp's dedicated text feature instead, which is the
+  // supported way to draw text with sharp.
+  const textMaxWidth = Math.round(width * 0.92);
+  const textBuffer = await sharp({
+    text: {
+      text: `<span foreground="#ffffff">${escapeXml(WATERMARK_TEXT)}</span>`,
+      font: `sans-serif bold ${fontSize}`,
+      width: textMaxWidth,
+      rgba: true,
+      align: "center",
+    },
+  })
+    .png()
+    .toBuffer();
+  const { width: textWidth = textMaxWidth, height: textHeight = fontSize } =
+    await sharp(textBuffer).metadata();
 
   const logoHeight = Math.max(32, Math.round(height * 0.06));
   const logoMargin = Math.round(logoHeight * 0.35);
 
-  const composites = [{ input: Buffer.from(svg), top: 0, left: 0 }];
+  const composites = [
+    { input: Buffer.from(barSvg), top: 0, left: 0 },
+    {
+      input: textBuffer,
+      top: height - barHeight + Math.round((barHeight - textHeight) / 2),
+      left: Math.max(0, Math.round((width - textWidth) / 2)),
+    },
+  ];
 
   const [leftLogo, rightLogo] = await Promise.all([
     sharp(LEFT_LOGO_PATH).resize({ height: logoHeight }).toBuffer(),

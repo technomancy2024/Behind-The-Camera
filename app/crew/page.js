@@ -34,8 +34,7 @@ export default function CrewPage() {
   }
 
   return (
-    <BoothShell bgColor="#050816" showHome>
-      <img className={styles.bgPhoto} style={{ opacity: 0.4 }} src="/figma/crew-bg.png" alt="" />
+    <BoothShell background="/figma/crew-bg.png" bgOpacity={0.4} bgColor="#050816" showHome>
       <div className={styles.darkContent}>
         <h1 className={styles.darkHeading}>
           Choose Your

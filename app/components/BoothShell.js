@@ -1,23 +1,79 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import styles from "../booth.module.css";
 import { clearBooth } from "../../lib/booth";
 
-export default function BoothShell({ background, bgColor, align = "center", showHome = false, children }) {
+const DESIGN_WIDTH = 480;
+// Below this stage width the layout stays in its natural, fully fluid
+// mobile mode (matches the design's own max-width) — no scaling applied.
+const SCALE_BREAKPOINT = 481;
+
+export default function BoothShell({
+  background,
+  bgOpacity = 1,
+  bgColor,
+  align = "center",
+  showHome = false,
+  children,
+}) {
   const router = useRouter();
+  const stageRef = useRef(null);
+  const boothRef = useRef(null);
 
   function goHome() {
     clearBooth();
     router.push("/");
   }
 
+  // Kiosk/tablet/desktop screens are far taller and wider than the mobile
+  // design this app was built for. Rather than stretching the mobile layout
+  // to fill that space (which blows up the gaps between elements), the
+  // booth card keeps its natural mobile-shaped size and content, and is
+  // uniformly scaled up as a single unit to fill the available screen —
+  // exactly like zooming into the same composition. This keeps every
+  // proportion (including font sizes, which scale right along with
+  // everything else) identical to the mobile design at any screen size.
+  useEffect(() => {
+    const stage = stageRef.current;
+    const booth = boothRef.current;
+    if (!stage || !booth) return;
+
+    function applyScale() {
+      const stageWidth = stage.clientWidth;
+      const stageHeight = stage.clientHeight;
+
+      if (stageWidth < SCALE_BREAKPOINT) {
+        booth.style.transform = "";
+        return;
+      }
+
+      // offsetHeight reads the booth's own natural (un-transformed) layout
+      // height at the fixed design width, so every page's actual content
+      // height — whatever it is — drives its own scale factor.
+      const naturalHeight = booth.offsetHeight || 1;
+      const scale = Math.min(stageWidth / DESIGN_WIDTH, stageHeight / naturalHeight);
+      booth.style.transform = `translate(-50%, -50%) scale(${scale})`;
+    }
+
+    applyScale();
+    const resizeObserver = new ResizeObserver(applyScale);
+    resizeObserver.observe(stage);
+    resizeObserver.observe(booth);
+    window.addEventListener("resize", applyScale);
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", applyScale);
+    };
+  }, []);
+
   return (
-    <div className={styles.page}>
-      <main
-        className={styles.booth}
-        style={{ backgroundImage: background ? `url(${background})` : undefined, backgroundColor: bgColor }}
-      >
+    <div className={styles.page} ref={stageRef} style={{ backgroundColor: bgColor }}>
+      {background && (
+        <img className={styles.bgPhoto} style={{ opacity: bgOpacity }} src={background} alt="" />
+      )}
+      <main className={styles.booth} ref={boothRef}>
         <div className={styles.topBar}>
           <div className={styles.logoRow}>
             {showHome ? (

@@ -1,23 +1,54 @@
 .page {
-  min-height: 100dvh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f0e6da;
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
 }
 
+/* Mobile (default): the booth fills the stage exactly like before — full
+   width, natural viewport height, top-anchored content. Centering via
+   absolute + translate keeps the positioning strategy identical to the
+   scaled (kiosk/tablet/desktop) mode below, so there's no layout jump at
+   the breakpoint. */
 .booth {
-  position: relative;
-  z-index: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
   width: min(100%, 480px);
   min-height: 100dvh;
-  margin: 0 auto;
+  margin: 0;
   padding: 14px 20px 14px;
   overflow: hidden;
-  background-color: var(--background);
-  background-size: cover;
-  background-position: top center;
-  background-repeat: no-repeat;
+}
+
+@media (min-width: 481px) {
+  /* Kiosk/tablet/desktop: the booth becomes a fixed-size "mobile design
+     canvas" (480px wide, at least a phone-screen tall) that BoothShell's
+     ResizeObserver then scales up as one unit via inline transform to fill
+     the actual screen — see BoothShell.js. This preserves the mobile
+     composition and every proportion (fonts included) instead of
+     stretching flex gaps to fill a much taller viewport. */
+  .booth {
+    width: 480px;
+    min-height: 900px;
+  }
+}
+
+/* A direct child of .page (the fixed-size, non-scrolling stage), so it
+   always exactly frames the real viewport regardless of how .booth itself
+   is scaled/sized. Must stay outside the scaled .booth subtree — a
+   transform on an ancestor would also change containing-block behavior
+   for this if it were ever made position:fixed. */
+.bgPhoto {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
 }
 
 .topBar {
@@ -83,6 +114,17 @@
   align-items: flex-start;
   text-align: left;
   padding-top: 20px;
+}
+
+@media (min-width: 481px) {
+  /* calc(100dvh - ...) is relative to the true (unscaled) viewport, which
+     would desync from the booth's own fixed design-canvas height once the
+     scale transform is applied — pin it to the same 900px reference the
+     booth card itself uses in scaled mode. */
+  .screen,
+  .screenLeft {
+    min-height: calc(900px - 84px);
+  }
 }
 
 .dashLabel {
@@ -522,31 +564,7 @@
   margin-top: 12px;
 }
 
-@media (min-width: 700px) {
-  .page {
-    padding: 24px 0;
-  }
-
-  .booth {
-    min-height: 800px;
-    max-height: calc(100vh - 48px);
-    overflow-y: auto;
-    border-radius: 18px;
-    box-shadow: 0 10px 40px rgba(15, 33, 97, 0.15);
-  }
-}
-
 /* Gender & age selection (dark cinematic redesign) */
-.bgPhoto {
-  position: absolute;
-  z-index: 0;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  pointer-events: none;
-}
-
 .darkContent {
   position: relative;
   z-index: 1;
@@ -698,7 +716,8 @@
 }
 
 .crewCard {
-  min-height: 170px;
+  aspect-ratio: 3 / 4;
+  min-height: 0;
 }
 
 .crewCard img {
@@ -979,38 +998,91 @@
   height: 14px;
 }
 
-.qrStrip {
+.qrOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 16px;
-  border-top: 1px solid rgba(255, 124, 0, 0.4);
+  justify-content: center;
+  padding: 24px;
+  background: rgba(5, 8, 22, 0.82);
+}
+
+.qrModal {
+  position: relative;
+  width: min(360px, 100%);
+  max-height: calc(100dvh - 48px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 32px 24px 26px;
+  border: 1.5px solid #ff7c00;
+  border-radius: 20px;
   background: #111936;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
 }
 
-.qrStrip img {
-  width: 64px;
-  height: 64px;
-  border-radius: 10px;
-  background: #fff;
-  padding: 4px;
-  flex-shrink: 0;
+@media (min-width: 481px) {
+  /* Same desync as .screen: calc(100dvh - ...) tracks the true viewport,
+     not the booth's fixed design-canvas height, so it must be pinned to
+     the same 900px reference once the scale transform is active. */
+  .qrModal {
+    max-height: calc(900px - 48px);
+  }
 }
 
-.qrStripText {
-  text-align: left;
+.qrModalClose {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid #ff7c00;
+  border-radius: 50%;
+  background: transparent;
+  color: #f7f5ef;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.qrModalTitle {
+  display: block;
   color: #f7f8fa;
-}
-
-.qrStripText strong {
-  display: block;
-  font: 700 15px var(--font-display), Arial, sans-serif;
+  font: 700 17px var(--font-display), Arial, sans-serif;
+  letter-spacing: 1px;
   text-transform: uppercase;
-  margin-bottom: 4px;
 }
 
-.qrStripText span {
-  display: block;
-  font: 13px/1.35 var(--font-body), Arial, sans-serif;
+.qrModalText {
   color: rgba(247, 248, 250, 0.75);
+  font: 13px/1.4 var(--font-body), Arial, sans-serif;
+  max-width: 30ch;
+}
+
+.qrModalImageWrap {
+  margin-top: 6px;
+  padding: 12px;
+  border-radius: 14px;
+  background: #fff;
+}
+
+.qrModalImageWrap img {
+  display: block;
+  width: min(220px, 60vw);
+  height: min(220px, 60vw);
+}
+
+.qrModalCountdown {
+  margin-top: 6px;
+  color: #ff7c00;
+  font: 700 12px var(--font-display), Arial, sans-serif;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }

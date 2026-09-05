@@ -15,6 +15,7 @@ export default function CapturePage() {
 
   const videoRef = useRef(null);
   const streamRef = useRef(null);
+  const cardRef = useRef(null);
 
   useEffect(() => {
     const booth = readBooth();
@@ -77,6 +78,33 @@ export default function CapturePage() {
     setCountdown(3);
   }
 
+  // The live preview is center-cropped by object-fit: cover to the card's
+  // rendered aspect ratio. Crop the captured frame the same way so the photo
+  // keeps the exact framing the user saw, instead of the full uncropped feed.
+  function getCoverCropRect(sourceWidth, sourceHeight) {
+    const card = cardRef.current;
+    const containerAspect =
+      card && card.clientWidth && card.clientHeight
+        ? card.clientWidth / card.clientHeight
+        : sourceWidth / sourceHeight;
+    const sourceAspect = sourceWidth / sourceHeight;
+
+    let sx = 0;
+    let sy = 0;
+    let sw = sourceWidth;
+    let sh = sourceHeight;
+
+    if (sourceAspect > containerAspect) {
+      sw = sourceHeight * containerAspect;
+      sx = (sourceWidth - sw) / 2;
+    } else if (sourceAspect < containerAspect) {
+      sh = sourceWidth / containerAspect;
+      sy = (sourceHeight - sh) / 2;
+    }
+
+    return { sx, sy, sw, sh };
+  }
+
   async function capturePhoto() {
     const track = streamRef.current?.getVideoTracks?.()[0];
 
@@ -84,14 +112,15 @@ export default function CapturePage() {
       try {
         const capture = new window.ImageCapture(track);
         const bitmap = await capture.grabFrame();
+        const { sx, sy, sw, sh } = getCoverCropRect(bitmap.width, bitmap.height);
         const canvas = document.createElement("canvas");
-        canvas.width = bitmap.width;
-        canvas.height = bitmap.height;
+        canvas.width = sw;
+        canvas.height = sh;
         const ctx = canvas.getContext("2d");
         // Mirror horizontally so the saved photo matches the mirrored live preview.
         ctx.translate(canvas.width, 0);
         ctx.scale(-1, 1);
-        ctx.drawImage(bitmap, 0, 0);
+        ctx.drawImage(bitmap, sx, sy, sw, sh, 0, 0, sw, sh);
         const dataUrl = canvas.toDataURL("image/jpeg", 0.92);
         setCapturedImage(dataUrl);
         writeBooth({ capturedImage: dataUrl, resultUrl: null });
@@ -104,14 +133,15 @@ export default function CapturePage() {
 
     const video = videoRef.current;
     if (!video || !video.videoWidth) return;
+    const { sx, sy, sw, sh } = getCoverCropRect(video.videoWidth, video.videoHeight);
     const canvas = document.createElement("canvas");
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
+    canvas.width = sw;
+    canvas.height = sh;
     const ctx = canvas.getContext("2d");
     // Mirror horizontally so the saved photo matches the mirrored live preview.
     ctx.translate(canvas.width, 0);
     ctx.scale(-1, 1);
-    ctx.drawImage(video, 0, 0);
+    ctx.drawImage(video, sx, sy, sw, sh, 0, 0, sw, sh);
     const dataUrl = canvas.toDataURL("image/jpeg", 0.92);
     setCapturedImage(dataUrl);
     writeBooth({ capturedImage: dataUrl, resultUrl: null });
@@ -131,8 +161,7 @@ export default function CapturePage() {
   if (!ready) return null;
 
   return (
-    <BoothShell bgColor="#050816" showHome>
-      <img className={styles.bgPhoto} style={{ opacity: 0.6 }} src="/figma/capture-bg.png" alt="" />
+    <BoothShell background="/figma/capture-bg.png" bgOpacity={0.6} bgColor="#050816" showHome>
       <div className={styles.darkContent}>
         <h1 className={styles.darkHeading}>
           <span className={styles.darkHeadingGradientReverse}>Ready For</span>
@@ -144,7 +173,7 @@ export default function CapturePage() {
           Our AI will transform you into a movie production professional.
         </p>
 
-        <div className={styles.captureCard}>
+        <div className={styles.captureCard} ref={cardRef}>
           {capturedImage ? (
             <img src={capturedImage} alt="Captured selfie" />
           ) : cameraError ? (
