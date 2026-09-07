@@ -2,6 +2,19 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+## Updating the image watermark
+
+The watermark uses bundled SVG outlines so production does not need installed fonts.
+After changing `text` in `lib/watermark-outline.js`, regenerate the visible lettering on Windows:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/generate-watermark.ps1
+```
+
+Commit the regenerated `lib/watermark-outline.js` and redeploy. Changing `text` alone
+does not change the rendered SVG path. Existing generated images keep their original watermark;
+generate a new image after deployment to verify the update.
+
 First, run the development server:
 
 ```bash
