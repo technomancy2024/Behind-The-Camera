@@ -3,8 +3,7 @@ import Replicate from "replicate";
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import sharp from "sharp";
 
-const WATERMARK_TEXT =
-  "This is an AI Generated Poster made at IFFJK 2026";
+import watermarkOutline from "../../../lib/watermark-outline";
 
 const LEFT_LOGO_PATH = path.join(
   process.cwd(),
@@ -15,15 +14,6 @@ const RIGHT_LOGO_PATH = path.join(
   process.cwd(),
   "public/figma/seal-logo.png"
 );
-
-function escapeXml(text) {
-  return String(text)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&apos;");
-}
 
 async function addWatermark(buffer) {
   const image = sharp(buffer);
@@ -52,20 +42,16 @@ async function addWatermark(buffer) {
     logoHeight * 0.35
   );
 
-  /*
-   * IMPORTANT:
-   * Do NOT use Sharp's `text` input here.
-   *
-   * It depends on the fonts available in the
-   * deployment environment and can produce □□□
-   * characters on Netlify/Linux.
-   *
-   * Instead, render the complete watermark as SVG.
-   */
-
-  const safeText = escapeXml(WATERMARK_TEXT);
-
+  // SVG text still needs installed fonts. Use bundled vector outlines so
+  // Sharp renders the same watermark on Netlify and local machines.
   const textMaxWidth = Math.round(width * 0.92);
+  const textScale = Math.min(
+    fontSize / watermarkOutline.fontSize,
+    textMaxWidth / watermarkOutline.width,
+    (barHeight * 0.8) / watermarkOutline.height
+  );
+  const textX = (textMaxWidth - watermarkOutline.width * textScale) / 2;
+  const textY = (barHeight - watermarkOutline.height * textScale) / 2;
 
   const textSvg = `
     <svg
@@ -73,26 +59,9 @@ async function addWatermark(buffer) {
       height="${barHeight}"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <style>
-        .watermark {
-          font-family:
-            Arial,
-            Helvetica,
-            sans-serif;
-          font-size: ${fontSize}px;
-          font-weight: 700;
-        }
-      </style>
-
-      <text
-        x="${textMaxWidth / 2}"
-        y="${Math.round(barHeight * 0.63)}"
-        text-anchor="middle"
-        class="watermark"
-        fill="#ffffff"
-      >
-        ${safeText}
-      </text>
+      <g transform="translate(${textX} ${textY}) scale(${textScale}) translate(${-watermarkOutline.x} ${-watermarkOutline.y})">
+        <path fill="#ffffff" d="${watermarkOutline.path}" />
+      </g>
     </svg>
   `;
 
