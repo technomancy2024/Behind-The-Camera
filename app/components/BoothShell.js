@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import styles from "../booth.module.css";
 import { clearBooth } from "../../lib/booth";
 
-const DESIGN_WIDTH = 480;
 // Below this stage width the layout stays in its natural, fully fluid
 // mobile mode (matches the design's own max-width) — no scaling applied.
 const SCALE_BREAKPOINT = 481;
@@ -35,7 +34,7 @@ export default function BoothShell({
   // exactly like zooming into the same composition. This keeps every
   // proportion (including font sizes, which scale right along with
   // everything else) identical to the mobile design at any screen size.
-  useEffect(() => {
+  useLayoutEffect(() => {
     const stage = stageRef.current;
     const booth = boothRef.current;
     if (!stage || !booth) return;
@@ -44,16 +43,13 @@ export default function BoothShell({
       const stageWidth = stage.clientWidth;
       const stageHeight = stage.clientHeight;
 
-      if (stageWidth < SCALE_BREAKPOINT) {
-        booth.style.transform = "";
-        return;
-      }
-
-      // offsetHeight reads the booth's own natural (un-transformed) layout
-      // height at the fixed design width, so every page's actual content
-      // height — whatever it is — drives its own scale factor.
-      const naturalHeight = booth.offsetHeight || 1;
-      const scale = Math.min(stageWidth / DESIGN_WIDTH, stageHeight / naturalHeight);
+      const naturalWidth = Math.max(booth.offsetWidth, booth.scrollWidth);
+      const naturalHeight = Math.max(booth.offsetHeight, booth.scrollHeight, 1);
+      const scale = Math.min(
+        stageWidth / naturalWidth,
+        stageHeight / naturalHeight,
+        stageWidth < SCALE_BREAKPOINT ? 1 : Infinity,
+      );
       booth.style.transform = `translate(-50%, -50%) scale(${scale})`;
     }
 

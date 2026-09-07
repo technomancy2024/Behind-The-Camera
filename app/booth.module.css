@@ -5,22 +5,18 @@
   overflow: hidden;
 }
 
-/* Mobile (default): the booth fills the stage exactly like before — full
-   width, natural viewport height, top-anchored content. Centering via
-   absolute + translate keeps the positioning strategy identical to the
-   scaled (kiosk/tablet/desktop) mode below, so there's no layout jump at
-   the breakpoint. */
+/* The complete composition scales down when the viewport is shorter than its content. */
 .booth {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1;
-  width: min(100%, 480px);
+  width: clamp(320px, 100%, 480px);
   min-height: 100dvh;
   margin: 0;
   padding: 14px 20px 14px;
-  overflow: hidden;
+  overflow: visible;
 }
 
 @media (min-width: 481px) {
@@ -996,93 +992,4 @@
 .roleBadge img {
   width: 14px;
   height: 14px;
-}
-
-.qrOverlay {
-  position: fixed;
-  inset: 0;
-  z-index: 50;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  background: rgba(5, 8, 22, 0.82);
-}
-
-.qrModal {
-  position: relative;
-  width: min(360px, 100%);
-  max-height: calc(100dvh - 48px);
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  padding: 32px 24px 26px;
-  border: 1.5px solid #ff7c00;
-  border-radius: 20px;
-  background: #111936;
-  text-align: center;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
-}
-
-@media (min-width: 481px) {
-  /* Same desync as .screen: calc(100dvh - ...) tracks the true viewport,
-     not the booth's fixed design-canvas height, so it must be pinned to
-     the same 900px reference once the scale transform is active. */
-  .qrModal {
-    max-height: calc(900px - 48px);
-  }
-}
-
-.qrModalClose {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  display: grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  border: 1.5px solid #ff7c00;
-  border-radius: 50%;
-  background: transparent;
-  color: #f7f5ef;
-  font-size: 18px;
-  line-height: 1;
-  cursor: pointer;
-}
-
-.qrModalTitle {
-  display: block;
-  color: #f7f8fa;
-  font: 700 17px var(--font-display), Arial, sans-serif;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
-.qrModalText {
-  color: rgba(247, 248, 250, 0.75);
-  font: 13px/1.4 var(--font-body), Arial, sans-serif;
-  max-width: 30ch;
-}
-
-.qrModalImageWrap {
-  margin-top: 6px;
-  padding: 12px;
-  border-radius: 14px;
-  background: #fff;
-}
-
-.qrModalImageWrap img {
-  display: block;
-  width: min(220px, 60vw);
-  height: min(220px, 60vw);
-}
-
-.qrModalCountdown {
-  margin-top: 6px;
-  color: #ff7c00;
-  font: 700 12px var(--font-display), Arial, sans-serif;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
 }
